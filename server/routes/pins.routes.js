@@ -12,11 +12,15 @@ const {
   savePin,
   savedPins,
   removeSavedPin,
+  searchPin,
 } = require("../controllers/pins.cotroller");
 
 var upload = multer({ storage: multer.diskStorage({}) });
 
 router.route("/").get(getToken, getPins).post(getToken, createPin);
+
+// search pin
+router.route("/search").get(getToken, searchPin);
 
 router
   .route("/upload")

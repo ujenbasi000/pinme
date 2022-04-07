@@ -29,16 +29,33 @@ const fetchPins = () => async (dispatch) => {
   try {
     const { data } = await axios.get("/api/pin");
     if (data.status !== 200) {
+      window.location.href = "/login";
       return alert("Something went wrong!");
     }
     dispatch(fetchPinSuccess(data.pins));
   } catch (error) {
+    window.location.href = "/login";
+    dispatch(fetchPinFailure(error.response.data.message));
+  }
+};
+const fetchSearchedPins = (value) => async (dispatch) => {
+  dispatch(fetchPinRequest());
+  try {
+    const { data } = await axios.get("/api/pin/search?q=" + value);
+    if (data.status !== 200) {
+      window.location.href = "/login";
+      return alert("Something went wrong!");
+    }
+    dispatch(fetchPinSuccess(data.pins));
+  } catch (error) {
+    window.location.href = "/login";
     dispatch(fetchPinFailure(error.response.data.message));
   }
 };
 
 export {
   fetchPins,
+  fetchSearchedPins,
   FETCH_PIN_REQUEST,
   FETCH_PIN_SUCCESS,
   FETCH_PIN_FAILURE,

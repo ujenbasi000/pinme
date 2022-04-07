@@ -309,6 +309,31 @@ const removeSavedPin = asyncHandler(async (req, res) => {
   }
 });
 
+const searchPin = asyncHandler(async (req, res) => {
+  try {
+    const { q } = req.query;
+    const pins = await Pins.find({
+      $or: [
+        { title: { $regex: q, $options: "i" } },
+        { description: { $regex: q, $options: "i" } },
+        { category: { $regex: q, $options: "i" } },
+      ],
+    });
+    res.status(200).json({
+      success: true,
+      status: 200,
+      message: "Pins found",
+      pins: pins,
+    });
+  } catch (error) {
+    res.status(500).json({
+      success: false,
+      status: 500,
+      message: "Server error",
+    });
+  }
+});
+
 module.exports = {
   getPins,
   createPin,
@@ -321,4 +346,6 @@ module.exports = {
   savePin,
   savedPins,
   removeSavedPin,
+
+  searchPin,
 };

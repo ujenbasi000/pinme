@@ -6,10 +6,12 @@ import { useDispatch, useSelector } from "react-redux";
 import axios from "axios";
 import { fetchUser } from "../redux/actions/userActions";
 import { useState } from "react";
+import { fetchPins, fetchSearchedPins } from "../redux/actions/pinActions";
 
 const Header = () => {
   const { user } = useSelector((state) => state.user);
   const Navigate = useNavigate();
+  const [value, setValue] = useState("");
   const [showDropdown, setShowDropdown] = useState(false);
 
   const dispatch = useDispatch();
@@ -27,6 +29,11 @@ const Header = () => {
     }
   };
 
+  const handleSearch = async (e) => {
+    e.preventDefault();
+    dispatch(fetchSearchedPins(value));
+  };
+
   return (
     <div className="w-full fixed top-0 left-0 z-50 py-2 bg-white">
       <div className="px-4 flex gap-4 items-center">
@@ -35,11 +42,12 @@ const Header = () => {
         </a>
         <Link
           to="/"
+          onClick={() => dispatch(fetchPins())}
           className="bg-black px-4 py-[0.6em] rounded-full text-white font-semibold text-md"
         >
           Home
         </Link>
-        <form onSubmit={(e) => e.preventDefault()} className="w-full relative">
+        <form onSubmit={handleSearch} className="w-full relative">
           <div className="absolute top-1/3 left-4">
             <Search />
           </div>
@@ -49,6 +57,8 @@ const Header = () => {
             id="search"
             placeholder="Search"
             autoComplete="off"
+            value={value}
+            onChange={(e) => setValue(e.target.value)}
             className="px-10 py-[0.7em] rounded-full text-sm font-normal placeholder:text-black bg-gray-200 hover:bg-gray-300 w-full outline-none border-4 border-transparent focus:border-blue-300"
           />
         </form>

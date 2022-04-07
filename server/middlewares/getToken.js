@@ -16,9 +16,10 @@ const getToken = asyncHandler(async (req, res, next) => {
     req.user = decoded._id;
     next();
   } catch (err) {
+    console.log(err);
     return res
       .status(500)
-      .json({ success: false, status: 500, message: "Invalid user" });
+      .json({ success: false, status: 500, message: "Invalid user..." });
   }
 });
 

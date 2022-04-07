@@ -16,8 +16,8 @@ var upload = multer({ storage: multer.diskStorage({}) });
 
 router
   .route("/")
-  .post(upload.single("image"), register)
   .get(getToken, getUser)
+  .post(upload.single("image"), register)
   .put(getToken, upload.single("image"), changeProfile);
 
 router.route("/update").put(getToken, updateUser);

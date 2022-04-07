@@ -104,6 +104,7 @@ const login = asyncHandler(async (req, res) => {
 });
 
 const getUser = asyncHandler(async (req, res) => {
+  console.log("hello");
   const user = await User.findById(req.user).select("-password");
   if (!user) {
     return res.status(404).json({
